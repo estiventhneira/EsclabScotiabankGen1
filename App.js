@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -7,59 +6,26 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  TextInput,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Home from './src/Pages/Home';
+import ProductPage from './src/Pages/ProductPage';
+import Success from './src/Pages/Succes';
+
+const Stack = createNativeStackNavigator();
+
+const usuarioLogin = true;
 
 const App = () => {
-  const [text, setText] = useState('');
-  const [counter, setCounter] = useState(0);
-
   return (
-    <SafeAreaView>
-      <View>
-        <TextInput
-          onChangeText={e => {
-            setText(e);
-          }}
-          placeholder={'Hola mundo'}
-          style={{
-            borderWidth: 1,
-            maxWidth: 250,
-            borderRadius: 3,
-            borderColor: 'gray',
-            margin: 10,
-            padding: 4,
-          }}
-        />
-      </View>
-      <View>
-        <Text style={{margin: 13}}>{text}</Text>
-      </View>
-
-      <TouchableOpacity
-        style={{
-          margin: 20,
-          backgroundColor: 'black',
-          borderRadius: 4,
-          padding: 5,
-          width: 100,
-        }}
-        onPress={() => setCounter(counter + 1)}>
-        <View>
-          <Text style={{color: 'white'}}>Button</Text>
-        </View>
-      </TouchableOpacity>
-      <View>
-        <Text>{counter}</Text>
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName={usuarioLogin ? 'Home' : 'Login'}>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="ProductPage" component={ProductPage} />
+        <Stack.Screen name="Success" component={Success} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
