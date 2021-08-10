@@ -12,7 +12,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Home from './src/Pages/Home';
 import ProductPage from './src/Pages/ProductPage';
-import Success from './src/Pages/Succes';
+import ProductDetail from './src/Pages/ProductDetail';
+import Success from './src/Pages/Success';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ const App = () => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Login" component={Home} />
         <Stack.Screen name="ProductPage" component={ProductPage} />
+        <Stack.Screen name="ProductDetail" component={ProductDetail} />
         <Stack.Screen name="Success" component={Success} />
       </Stack.Navigator>
     </NavigationContainer>
