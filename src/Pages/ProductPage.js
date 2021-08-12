@@ -17,7 +17,7 @@ const ProductPage = ({navigation}) => {
 
   return (
     <ScrollView style={{backgroundColor: 'black'}}>
-      <View style={{margin: 20, alignItems: 'center'}}>
+      <View style={{margin: 20, marginBottom: 0, alignItems: 'center'}}>
         {console.log(character)}
         {character.results !== undefined ? (
           character.results.map((item, index) => {
@@ -98,28 +98,22 @@ const ProductPage = ({navigation}) => {
           <Text>Cargando...</Text>
         )}
       </View>
-      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          marginBottom: 75,
+        }}>
         <TouchableOpacity
           onPress={() => navigation.navigate('Success', {favoritos})}
           style={{
-            backgroundColor: '#69c8Ec',
+            backgroundColor: '#059669',
             width: 130,
             padding: 10,
             margin: 15,
             borderRadius: 5,
           }}>
-          <Text style={{color: 'white'}}>Ir a pagar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{
-            backgroundColor: '#69c8Ec',
-            width: 130,
-            padding: 10,
-            margin: 15,
-            borderRadius: 5,
-          }}>
-          <Text style={{color: 'white'}}>Ir Atrás</Text>
+          <Text style={{color: 'white', fontWeight: '700'}}>Ir a pagar</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

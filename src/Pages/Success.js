@@ -110,6 +110,11 @@ const Success = ({navigation, route}) => {
               : null}
           </View>
           <TouchableOpacity
+            onPress={() => {
+              if (favoritos.length === 0) {
+                setModalVisible(true);
+              }
+            }}
             style={{
               backgroundColor: 'white',
               padding: 12,
