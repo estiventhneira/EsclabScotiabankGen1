@@ -9,6 +9,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Text} from 'react-native';
 
 import Home from './src/Pages/Home';
 import ProductPage from './src/Pages/ProductPage';
@@ -22,8 +23,8 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={usuarioLogin ? 'Home' : 'Login'}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Login" component={Home} />
+        <Stack.Screen name="Home" component={Home} personaje={true} />
+        <Stack.Screen name="Login" component={Home} personaje={true} />
         <Stack.Screen name="ProductPage" component={ProductPage} />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
         <Stack.Screen name="Success" component={Success} />
