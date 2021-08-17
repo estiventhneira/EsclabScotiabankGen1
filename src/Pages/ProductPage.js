@@ -2,12 +2,28 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 const axios = require('axios').default;
+import gql from 'graphql-tag';
+import {useQuery} from '@apollo/client';
+
+const CHARACTERS = gql`
+  query characters($page: Int) {
+    characters(page: $page) {
+      results {
+        name
+        image
+        status
+        gender
+        species
+      }
+    }
+  }
+`;
 
 const ProductPage = ({navigation}) => {
   const [character, setCharacter] = useState('');
   const [favoritos, setFavoritos] = useState([]);
 
-  console.log(favoritos);
+  const {loading, error, data} = useQuery(CHARACTERS);
 
   useEffect(() => {
     axios
@@ -17,10 +33,9 @@ const ProductPage = ({navigation}) => {
 
   return (
     <ScrollView style={{backgroundColor: 'black'}}>
-      <View style={{margin: 20, marginBottom: 0, alignItems: 'center'}}>
-        {console.log(character)}
-        {character.results !== undefined ? (
-          character.results.map((item, index) => {
+      {data && loading === false ? (
+        <View style={{margin: 20, marginBottom: 0, alignItems: 'center'}}>
+          {data.characters.results.map((item, index) => {
             return (
               <TouchableOpacity
                 style={{marginVertical: 15}}
@@ -93,11 +108,14 @@ const ProductPage = ({navigation}) => {
                 </View>
               </TouchableOpacity>
             );
-          })
-        ) : (
-          <Text>Cargando...</Text>
-        )}
-      </View>
+          })}
+        </View>
+      ) : (
+        <Text
+          style={{fontSize: 27, fontWeight: '700', margin: 40, color: 'white'}}>
+          Cargando...
+        </Text>
+      )}
       <View
         style={{
           flexDirection: 'row',

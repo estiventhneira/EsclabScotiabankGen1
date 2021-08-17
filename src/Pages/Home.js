@@ -7,6 +7,8 @@ import {
   useWindowDimensions,
   Image,
 } from 'react-native';
+import {useQuery} from '@apollo/client';
+import gql from 'graphql-tag';
 
 const Home = ({navigation}) => {
   const [favoritos, setFavoritos] = useState();
