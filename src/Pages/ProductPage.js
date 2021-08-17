@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
-const axios = require('axios').default;
 import gql from 'graphql-tag';
 import {useQuery} from '@apollo/client';
 
@@ -20,16 +19,17 @@ const CHARACTERS = gql`
 `;
 
 const ProductPage = ({navigation}) => {
-  const [character, setCharacter] = useState('');
   const [favoritos, setFavoritos] = useState([]);
 
   const {loading, error, data} = useQuery(CHARACTERS);
 
-  useEffect(() => {
-    axios
-      .get('https://rickandmortyapi.com/api/character/?page=1')
-      .then(response => setCharacter(response.data));
-  }, []);
+  if (error) {
+    return (
+      <View>
+        <Text>Error :c</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={{backgroundColor: 'black'}}>
