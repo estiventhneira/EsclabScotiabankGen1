@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-import React from 'react';
+import React, {createContext, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
@@ -19,24 +19,30 @@ const Stack = createNativeStackNavigator();
 
 const usuarioLogin = true;
 
+export const Context = createContext({favoritos: [], setFavoritos: () => {}});
+
 const client = new ApolloClient({
   uri: 'https://rickandmortyapi.com/graphql',
   cache: new InMemoryCache(),
 });
 
 const App = () => {
+  const [favoritos, setFavoritos] = useState([]);
+
   return (
-    <ApolloProvider client={client}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={usuarioLogin ? 'Home' : 'Login'}>
-          <Stack.Screen name="Home" component={Home} personaje={true} />
-          <Stack.Screen name="Login" component={Home} personaje={true} />
-          <Stack.Screen name="ProductPage" component={ProductPage} />
-          <Stack.Screen name="ProductDetail" component={ProductDetail} />
-          <Stack.Screen name="Success" component={Success} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </ApolloProvider>
+    <Context.Provider value={{favoritos, setFavoritos}}>
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName={usuarioLogin ? 'Home' : 'Login'}>
+            <Stack.Screen name="Home" component={Home} personaje={true} />
+            <Stack.Screen name="Login" component={Home} personaje={true} />
+            <Stack.Screen name="ProductPage" component={ProductPage} />
+            <Stack.Screen name="ProductDetail" component={ProductDetail} />
+            <Stack.Screen name="Success" component={Success} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ApolloProvider>
+    </Context.Provider>
   );
 };
 

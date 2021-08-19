@@ -1,8 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import gql from 'graphql-tag';
 import {useQuery} from '@apollo/client';
+import {Context} from '../../App';
 
 const CHARACTERS = gql`
   query characters($page: Int) {
@@ -14,15 +15,25 @@ const CHARACTERS = gql`
         status
         gender
         species
+        episode {
+          name
+        }
+        location {
+          name
+        }
       }
     }
   }
 `;
 
 const ProductPage = ({navigation}) => {
-  const [favoritos, setFavoritos] = useState([]);
+  const context = useContext(Context);
+  const {favoritos} = context.favoritos;
 
   const {loading, error, data} = useQuery(CHARACTERS);
+
+  console.log(data);
+  console.log(error);
 
   if (error) {
     return (
@@ -83,9 +94,12 @@ const ProductPage = ({navigation}) => {
                 </Text>
                 <View style={{flexDirection: 'row'}}>
                   <TouchableOpacity
-                    onPress={() =>
-                      setFavoritos(favoritos => [...favoritos, item.id])
-                    }
+                    onPress={() => {
+                      context.setFavoritos(favoritos => [
+                        ...favoritos,
+                        item.id,
+                      ]);
+                    }}
                     style={{
                       backgroundColor: '#97ce4c',
                       width: '40%',
@@ -124,7 +138,7 @@ const ProductPage = ({navigation}) => {
           marginBottom: 75,
         }}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Success', {favoritos})}
+          onPress={() => navigation.navigate('Success')}
           style={{
             backgroundColor: '#059669',
             width: 130,

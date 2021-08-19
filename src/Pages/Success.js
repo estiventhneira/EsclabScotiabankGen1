@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -10,9 +11,9 @@ import {
   Modal,
   SafeAreaView,
 } from 'react-native';
-const axios = require('axios').default;
 import gql from 'graphql-tag';
 import {useQuery} from '@apollo/client';
+import {Context} from '../../App';
 
 const CHARACTERSBYIDS = gql`
   query characters($ids: [ID!]!) {
@@ -28,10 +29,11 @@ const CHARACTERSBYIDS = gql`
 `;
 
 const Success = ({navigation, route}) => {
+  const context = useContext(Context);
   const [modalVisible, setModalVisible] = useState(false);
   const windowHeight = useWindowDimensions().height;
-  const favoritos = route.params.favoritos ? route.params.favoritos : [];
-
+  const favoritos = [];
+  console.log(context);
   const {
     data: data_characters_byid,
     loading: loading_characters_byid,

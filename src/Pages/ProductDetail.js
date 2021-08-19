@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,12 @@ import {
   ScrollView,
   useWindowDimensions,
 } from 'react-native';
+import {Context} from '../../App';
 
 const Succes = ({navigation, route}) => {
   const windowHeight = useWindowDimensions().height;
   const {item} = route.params;
+  const context = useContext(Context);
 
   return (
     <ScrollView style={{minHeight: windowHeight, backgroundColor: 'black'}}>
@@ -82,6 +84,7 @@ const Succes = ({navigation, route}) => {
           </Text>
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
+              onPress={() => context.setFavoritos(item.id)}
               style={{
                 backgroundColor: '#97ce4c',
                 width: '40%',
