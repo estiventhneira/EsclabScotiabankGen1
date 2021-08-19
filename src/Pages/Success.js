@@ -11,33 +11,49 @@ import {
   SafeAreaView,
 } from 'react-native';
 const axios = require('axios').default;
+import gql from 'graphql-tag';
+import {useQuery} from '@apollo/client';
+
+const CHARACTERSBYIDS = gql`
+  query characters($ids: [ID!]!) {
+    charactersByIds(ids: $ids) {
+      name
+      id
+      status
+      gender
+      species
+      image
+    }
+  }
+`;
 
 const Success = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [forpay, setForPay] = useState([]);
   const windowHeight = useWindowDimensions().height;
   const favoritos = route.params.favoritos ? route.params.favoritos : [];
 
+  const {
+    data: data_characters_byid,
+    loading: loading_characters_byid,
+    error: error_characters_byid,
+  } = useQuery(CHARACTERSBYIDS, {
+    variables: {ids: favoritos},
+  });
+
   useEffect(() => {
     if (favoritos.length > 0) {
-      axios
-        .get(`https://rickandmortyapi.com/api/character/${favoritos}`)
-        .then(response => {
-          if (response.data.length === undefined) {
-            setForPay([response.data]);
-          } else {
-            setForPay(response.data);
-          }
-        })
-        .catch(error => {
-          console.warn(error);
-          setForPay([]);
-        });
     } else {
       setModalVisible(true);
-      setForPay([]);
     }
   }, []);
+
+  if (loading_characters_byid) {
+    return <Text>Cargando...</Text>;
+  }
+
+  if (error_characters_byid) {
+    return <Text>Error :c</Text>;
+  }
 
   return (
     <SafeAreaView>
@@ -56,8 +72,9 @@ const Success = ({navigation, route}) => {
             </Text>
           </View>
           <View>
-            {forpay && forpay.length !== 0
-              ? forpay.map((item, index) => {
+            {data_characters_byid &&
+            data_characters_byid.charactersByIds[0].id !== null
+              ? data_characters_byid.charactersByIds.map((item, index) => {
                   return (
                     <View
                       style={{marginVertical: 15}}
