@@ -5,10 +5,11 @@
  * @format
  * @flow strict-local
  */
-import React, {createContext, useState} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+import CarritoProvider from './src/Context/CarritoContext';
 
 import Home from './src/Pages/Home';
 import ProductPage from './src/Pages/ProductPage';
@@ -16,10 +17,7 @@ import ProductDetail from './src/Pages/ProductDetail';
 import Success from './src/Pages/Success';
 
 const Stack = createNativeStackNavigator();
-
 const usuarioLogin = true;
-
-export const Context = createContext({favoritos: [], setFavoritos: () => {}});
 
 const client = new ApolloClient({
   uri: 'https://rickandmortyapi.com/graphql',
@@ -27,10 +25,8 @@ const client = new ApolloClient({
 });
 
 const App = () => {
-  const [favoritos, setFavoritos] = useState([]);
-
   return (
-    <Context.Provider value={{favoritos, setFavoritos}}>
+    <CarritoProvider>
       <ApolloProvider client={client}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName={usuarioLogin ? 'Home' : 'Login'}>
@@ -42,7 +38,7 @@ const App = () => {
           </Stack.Navigator>
         </NavigationContainer>
       </ApolloProvider>
-    </Context.Provider>
+    </CarritoProvider>
   );
 };
 

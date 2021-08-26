@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import gql from 'graphql-tag';
 import {useQuery} from '@apollo/client';
-import {Context} from '../../App';
+import {CarritoContext} from '../Context/CarritoContext';
 
 const CHARACTERS = gql`
   query characters($page: Int) {
@@ -27,15 +27,13 @@ const CHARACTERS = gql`
 `;
 
 const ProductPage = ({navigation}) => {
-  const context = useContext(Context);
-  const {favoritos} = context.favoritos;
+  const context = useContext(CarritoContext);
+  const {setFavoritos} = context;
 
   const {loading, error, data} = useQuery(CHARACTERS);
 
-  console.log(data);
-  console.log(error);
-
   if (error) {
+    console.warn(error);
     return (
       <View>
         <Text>Error :c</Text>
@@ -51,7 +49,11 @@ const ProductPage = ({navigation}) => {
             return (
               <TouchableOpacity
                 style={{marginVertical: 15}}
-                onPress={() => navigation.navigate('ProductDetail', {item})}>
+                onPress={() => {
+                  navigation.navigate('ProductDetail');
+                  context.setCharacterSelected(item);
+                }}
+                key={index}>
                 <Image
                   source={{uri: `${item.image}`}}
                   style={{height: 250, width: 250}}
@@ -95,10 +97,7 @@ const ProductPage = ({navigation}) => {
                 <View style={{flexDirection: 'row'}}>
                   <TouchableOpacity
                     onPress={() => {
-                      context.setFavoritos(favoritos => [
-                        ...favoritos,
-                        item.id,
-                      ]);
+                      setFavoritos(favoritos => [...favoritos, item.id]);
                     }}
                     style={{
                       backgroundColor: '#97ce4c',
@@ -111,6 +110,14 @@ const ProductPage = ({navigation}) => {
                     <Text style={{color: 'white'}}>Agregar</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
+                    onPress={() => {
+                      setFavoritos(favoritos => {
+                        const newArr = favoritos.filter(
+                          value => value !== item.id,
+                        );
+                        return newArr;
+                      });
+                    }}
                     style={{
                       backgroundColor: '#fb6467',
                       width: '40%',

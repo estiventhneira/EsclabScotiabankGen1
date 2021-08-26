@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import gql from 'graphql-tag';
 import {useQuery} from '@apollo/client';
-import {Context} from '../../App';
+import {CarritoContext} from '../Context/CarritoContext';
 
 const CHARACTERSBYIDS = gql`
   query characters($ids: [ID!]!) {
@@ -28,12 +28,15 @@ const CHARACTERSBYIDS = gql`
   }
 `;
 
-const Success = ({navigation, route}) => {
-  const context = useContext(Context);
+const Success = ({navigation}) => {
+  // Start Context
+  const context = useContext(CarritoContext);
+  const {favoritos, setFavoritos} = context;
+  // END Context
+
   const [modalVisible, setModalVisible] = useState(false);
   const windowHeight = useWindowDimensions().height;
-  const favoritos = [];
-  console.log(context);
+
   const {
     data: data_characters_byid,
     loading: loading_characters_byid,
@@ -50,7 +53,13 @@ const Success = ({navigation, route}) => {
   }, []);
 
   if (loading_characters_byid) {
-    return <Text>Cargando...</Text>;
+    return (
+      <ScrollView style={{backgroundColor: 'black'}}>
+        <View style={{minHeight: windowHeight, margin: 20}}>
+          <Text style={{color: 'white'}}>Cargando...</Text>
+        </View>
+      </ScrollView>
+    );
   }
 
   if (error_characters_byid) {
@@ -123,6 +132,26 @@ const Success = ({navigation, route}) => {
                         }}>
                         Especie: {item.species}
                       </Text>
+                      <View style={{flexDirection: 'row'}}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            setFavoritos(favoritos => {
+                              const newArr = favoritos.filter(
+                                value => value !== item.id,
+                              );
+                              return newArr;
+                            });
+                          }}
+                          style={{
+                            backgroundColor: '#fb6467',
+                            width: '40%',
+                            margin: 5,
+                            padding: 9,
+                            borderRadius: 5,
+                          }}>
+                          <Text style={{color: 'white'}}>Eliminar</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   );
                 })

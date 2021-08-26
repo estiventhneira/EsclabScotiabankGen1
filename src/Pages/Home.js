@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 const Home = ({navigation}) => {
-  const [favoritos, setFavoritos] = useState();
   const heigth = useWindowDimensions().height;
 
   return (
@@ -51,7 +50,7 @@ const Home = ({navigation}) => {
           <Text style={{textAlign: 'center'}}>Ver personajes</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Success', {favoritos})}
+          onPress={() => navigation.navigate('Success')}
           style={{
             backgroundColor: 'white',
             width: 130,

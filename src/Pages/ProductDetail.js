@@ -8,12 +8,13 @@ import {
   ScrollView,
   useWindowDimensions,
 } from 'react-native';
-import {Context} from '../../App';
+import {CarritoContext} from '../Context/CarritoContext';
 
-const Succes = ({navigation, route}) => {
+const ProductDetail = ({navigation}) => {
   const windowHeight = useWindowDimensions().height;
-  const {item} = route.params;
-  const context = useContext(Context);
+
+  const context = useContext(CarritoContext);
+  const {characterSelected, setFavoritos} = context;
 
   return (
     <ScrollView style={{minHeight: windowHeight, backgroundColor: 'black'}}>
@@ -21,11 +22,9 @@ const Succes = ({navigation, route}) => {
         style={{
           alignItems: 'center',
         }}>
-        <TouchableOpacity
-          style={{marginVertical: 15}}
-          onPress={() => navigation.navigate('Success', {item})}>
+        <View style={{marginVertical: 15}}>
           <Image
-            source={{uri: `${item.image}`}}
+            source={{uri: `${characterSelected.image}`}}
             style={{height: 250, width: 250}}
           />
           <Text
@@ -35,7 +34,7 @@ const Succes = ({navigation, route}) => {
               fontSize: 20,
               color: 'white',
             }}>
-            {item.name}
+            {characterSelected.name}
           </Text>
           <Text
             style={{
@@ -44,7 +43,7 @@ const Succes = ({navigation, route}) => {
               fontSize: 20,
               color: 'white',
             }}>
-            Status: {item.status}
+            Status: {characterSelected.status}
           </Text>
           <Text
             style={{
@@ -53,7 +52,7 @@ const Succes = ({navigation, route}) => {
               fontSize: 20,
               color: 'white',
             }}>
-            Genero: {item.gender}
+            Genero: {characterSelected.gender}
           </Text>
           <Text
             style={{
@@ -62,7 +61,7 @@ const Succes = ({navigation, route}) => {
               fontSize: 20,
               color: 'white',
             }}>
-            Especie: {item.species}
+            Especie: {characterSelected.species}
           </Text>
           <Text
             style={{
@@ -71,7 +70,7 @@ const Succes = ({navigation, route}) => {
               fontSize: 20,
               color: 'white',
             }}>
-            Apariciones: {item.episode.length}
+            Apariciones: {characterSelected.episode.length}
           </Text>
           <Text
             style={{
@@ -80,11 +79,13 @@ const Succes = ({navigation, route}) => {
               fontSize: 20,
               color: 'white',
             }}>
-            Ubicación: {item.location.name}
+            Ubicación: {characterSelected.location.name}
           </Text>
           <View style={{flexDirection: 'row'}}>
             <TouchableOpacity
-              onPress={() => context.setFavoritos(item.id)}
+              onPress={() =>
+                setFavoritos(favoritos => [...favoritos, characterSelected.id])
+              }
               style={{
                 backgroundColor: '#97ce4c',
                 width: '40%',
@@ -96,6 +97,14 @@ const Succes = ({navigation, route}) => {
               <Text style={{color: 'white'}}>Agregar</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              onPress={() => {
+                setFavoritos(favoritos => {
+                  const newArr = favoritos.filter(
+                    value => value !== characterSelected.id,
+                  );
+                  return newArr;
+                });
+              }}
               style={{
                 backgroundColor: '#fb6467',
                 width: '40%',
@@ -106,10 +115,21 @@ const Succes = ({navigation, route}) => {
               <Text style={{color: 'white'}}>Eliminar</Text>
             </TouchableOpacity>
           </View>
+        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Success')}
+          style={{
+            backgroundColor: '#059669',
+            width: 130,
+            padding: 10,
+            margin: 15,
+            borderRadius: 5,
+          }}>
+          <Text style={{color: 'white', fontWeight: '700'}}>Ir a pagar</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 };
 
-export default Succes;
+export default ProductDetail;
