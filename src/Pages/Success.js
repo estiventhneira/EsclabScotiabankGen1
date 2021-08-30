@@ -45,6 +45,8 @@ const Success = ({navigation}) => {
     variables: {ids: favoritos},
   });
 
+
+
   useEffect(() => {
     if (favoritos.length > 0) {
     } else {
@@ -88,6 +90,7 @@ const Success = ({navigation}) => {
               ? data_characters_byid.charactersByIds.map((item, index) => {
                   return (
                     <View
+                      key={index}
                       style={{marginVertical: 15}}
                       onPress={() =>
                         navigation.navigate('ProductDetail', {item})
