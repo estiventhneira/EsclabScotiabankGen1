@@ -15,6 +15,7 @@ import Home from './src/Pages/Home';
 import ProductPage from './src/Pages/ProductPage';
 import ProductDetail from './src/Pages/ProductDetail';
 import Success from './src/Pages/Success';
+import AddCharacter from './src/Pages/AddCharacter';
 
 const Stack = createNativeStackNavigator();
 const usuarioLogin = true;
@@ -35,6 +36,7 @@ const App = () => {
             <Stack.Screen name="ProductPage" component={ProductPage} />
             <Stack.Screen name="ProductDetail" component={ProductDetail} />
             <Stack.Screen name="Success" component={Success} />
+            <Stack.Screen name="AddCharacter" component={AddCharacter} />
           </Stack.Navigator>
         </NavigationContainer>
       </ApolloProvider>

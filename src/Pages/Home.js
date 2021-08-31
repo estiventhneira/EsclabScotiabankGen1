@@ -61,6 +61,25 @@ const Home = ({navigation}) => {
           <Text style={{textAlign: 'center'}}>Ir a carrito</Text>
         </TouchableOpacity>
       </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 15,
+        }}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AddCharacter')}
+          style={{
+            backgroundColor: 'white',
+            width: 130,
+            padding: 10,
+            margin: 15,
+            borderRadius: 5,
+          }}>
+          <Text style={{textAlign: 'center'}}>Añadir personaje</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
